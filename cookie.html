@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>cookie</title>
+    <link rel="stylesheet" type="text/css" href="./themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="./themes/icon.css">
+	<link rel="stylesheet" href="./bulid/css/home.css">
+	<script type="text/javascript" src="./lib/js/jquery.min.js"></script>
+	<script type="text/javascript" src="./lib/js/jquery.easyui.min.js"></script>
+</head>
+<body>
+    <input type="text" value="2017-07-24 14:53:56" id="ipt">
+    <button id="btn">获取</button>
+</body>
+<script>
+// 全局变量
+ var myWeb={
+        time:1000,
+        gsh:function(name){
+            return name>=10?name:"0"+name
+        },
+        getDate:function(){
+                var date=new Date();
+                var year=date.getFullYear();
+                var month=this.gsh(date.getMonth()+1)
+                var days=this.gsh(date.getDate());
+                var hour=this.gsh(date.getHours());
+                var minutes=this.gsh(date.getMinutes());
+                var second=this.gsh(date.getSeconds());
+    return year+"-"+month+"-"+days+" "+hour+":"+minutes+":"+second;
+        },
+        setCookie:function(name,value){//写cookies
+           
+            // var Days = 30;
+            // var exp = new Date();
+            // exp.setTime(exp.getTime() + Days*24*60*60*1000);
+            document.cookie = name + "="+ escape (value)//设置cookie的有效期;expires+"="+data
+        },
+        getCookie:function(name){//JS获取cookies方法!
+                var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+                if(arr=document.cookie.match(reg))
+                return unescape(arr[2]);
+                else
+                return null;
+            },
+          value:$("#ipt").val(),
+          arr:[],  
+        }
+    
+
+// 获取页面的值
+$("#btn").click(function(){
+    myWeb.arr.push(myWeb.value);
+    myWeb.setCookie("time",myWeb.arr);
+
+})
+
+setInterval(function(){
+      var msges=myWeb.getCookie("time").split(",");
+      var msg=myWeb.getDate();
+      for(var i=0;i<msges.length;i++){
+            if(msges[i]==msg){
+           $.messager.show({
+	title:'我的消息',
+	msg:msg,
+	showType:'show',
+	showType:"slide",
+    timeout:5000,
+    width:"250px",
+    height:"200px"
+	})
+    }
+      }
+    // console.log(myWeb.getDate())
+    },myWeb.time)
+ 
+</script>
+</html>
